@@ -8,7 +8,7 @@ WORKDIR /usr/src/app
 COPY . .
 
 # Build the Rust application
-RUN cargo build --release
+RUN cargo build
 
 # Set the command to run the application
-CMD ["./src/main"]
+CMD ["./target/debug/inthebox"]

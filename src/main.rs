@@ -8,8 +8,7 @@ use axum::{Router, routing, serve};
 use tokio::net::TcpListener;
 use dotenv::dotenv;
 fn router_creator() -> Router {
-    Router::new()
-        .route("/", routing::get(|| async { "Hello, world!" }))
+    routers::router_creator()
 }
 async fn db_pool() -> PgPool {
     match database::build_db_connection().await
