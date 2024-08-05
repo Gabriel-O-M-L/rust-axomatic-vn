@@ -2,13 +2,15 @@
 
 mod database;
 mod routers;
+mod views;
 
-use sqlx::PgPool;
+use std::fs;
+use sqlx::{migrate, PgPool};
 use axum::{Router, routing, serve};
 use tokio::net::TcpListener;
 use dotenv::dotenv;
-fn router_creator() -> Router {
-    routers::router_creator()
+async fn router_creator() -> Router {
+    routers::router_creator(db_pool().await)
 }
 async fn db_pool() -> PgPool {
     match database::build_db_connection().await
@@ -22,12 +24,9 @@ async fn db_pool() -> PgPool {
 }
 
 #[tokio::main]
-
 async fn main() {
     dotenv().ok();
-    let database = db_pool().await;
-
-    let app: Router = router_creator();
+    let app: Router = router_creator().await;
 
     let listener = TcpListener::bind("127.0.0.1:8080").await.unwrap();
     match serve(listener, app.into_make_service()).await{

@@ -7,6 +7,7 @@ curl -1 --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 sudo apt-get install -y libssl-dev
 sudo apt-get install -y postgresql
 sudo apt-get install -y docker-compose
+sudo apt install pkg-config libssl-dev
 pip install docker -y requests
 
 # Add Docker's official GPG key:
