@@ -46,7 +46,7 @@ pub async fn sign_in(database: Arc<PgPool>, Json(payload) : Json<User>) -> impl 
             match sqlx::query("SELECT email, password_hash FROM \"user\" WHERE password_hash = $2 AND email = $1")
                 .bind(&payload.email)
                 .bind(&password_hash)
-                .execute(&*database)
+                .fetch_one(&*database)
                 .await
             {
                 Ok(_) => {
