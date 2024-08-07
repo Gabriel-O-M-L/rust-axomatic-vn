@@ -3,10 +3,10 @@ use axum::{
     response::{Html, IntoResponse},
     http::{StatusCode, Uri, header::{self, HeaderMap, HeaderName}},
 };
-use sqlx::PgPool;
-use serde::{Deserialize, Serialize};
+use sqlx::{PgPool, Row};
+use serde::Deserialize;
 use std::sync::Arc;
-use bcrypt::{hash,DEFAULT_COST};
+use bcrypt::{hash,DEFAULT_COST,verify};
 
 use crate::tools::create_jwt;
 
@@ -41,15 +41,15 @@ pub async fn sign_up(database: Arc<PgPool>, Json(payload): Json<User>) -> impl I
     }
 }
 pub async fn sign_in(database: Arc<PgPool>, Json(payload) : Json<User>) -> impl IntoResponse {
-    match hash(&payload.password, DEFAULT_COST) {
-        Ok(password_hash) => {
-            match sqlx::query("SELECT email, password_hash FROM \"user\" WHERE password_hash = $2 AND email = $1")
-                .bind(&payload.email)
-                .bind(&password_hash)
-                .fetch_one(&*database)
-                .await
-            {
-                Ok(_) => {
+    match sqlx::query("SELECT email, password_hash FROM \"user\" WHERE email = $1")
+        .bind(&payload.email)
+        .fetch_one(&*database)
+        .await
+    {
+        Ok(row) => {
+            let stored_password_hash: String = row.get("password_hash");
+            match verify(&payload.password, &stored_password_hash) {
+                Ok(true) => {
                     match create_jwt(&payload.email) {
                         Ok(token) => {
                             let mut headers = HeaderMap::new();
@@ -62,14 +62,22 @@ pub async fn sign_in(database: Arc<PgPool>, Json(payload) : Json<User>) -> impl 
                         }
                     }
                 },
+                Ok(false) => {
+                    eprintln!("Password does not match");
+                    StatusCode::UNAUTHORIZED.into_response()
+                },
                 Err(e) => {
-                    eprintln!("Failed to find user: {}", e);
+                    eprintln!("Failed to verify password: {}", e);
                     StatusCode::INTERNAL_SERVER_ERROR.into_response()
                 }
             }
         },
+        Err(sqlx::Error::RowNotFound) => {
+            eprintln!("Failed to find user: no rows returned by a query that expected to return at least one row");
+            StatusCode::UNAUTHORIZED.into_response()
+        },
         Err(e) => {
-            eprintln!("Failed to hash password: {}", e);
+            eprintln!("Failed to find user: {}", e);
             StatusCode::INTERNAL_SERVER_ERROR.into_response()
         }
     }

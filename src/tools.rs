@@ -2,7 +2,7 @@ use jsonwebtoken::{encode, Header, EncodingKey};
 use serde::{Serialize, Deserialize};
 
 #[derive(Serialize, Deserialize)]
-pub struct Claims {
+struct Claims {
     sub: String,
     exp: usize,
 }
