@@ -1,11 +1,13 @@
 mod database;
 mod routers;
 mod views;
+mod tools;
 
 use sqlx::PgPool;
 use axum::{Router, serve};
 use tokio::net::TcpListener;
 use dotenv::dotenv;
+
 async fn router_creator() -> Router {
     routers::router_creator(db_pool().await)
 }

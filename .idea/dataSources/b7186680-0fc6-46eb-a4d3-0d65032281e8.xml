@@ -3,9 +3,9 @@
   <database-model serializer="dbm" dbms="POSTGRES" family-id="POSTGRES" format-version="4.52">
     <root id="1">
       <DateStyle>mdy</DateStyle>
-      <IntrospectionStateNumber>781</IntrospectionStateNumber>
+      <IntrospectionStateNumber>794</IntrospectionStateNumber>
       <ServerVersion>16.3</ServerVersion>
-      <StartupTime>1722859104</StartupTime>
+      <StartupTime>1722945652</StartupTime>
       <TimeZones>true ACDT
 true ACSST
 false ACST
@@ -703,7 +703,7 @@ true posixrules
 13292||10|C|G
 13292||-9223372036854775808|U|G
 13292||10|U|G</Grants>
-      <IntrospectionStateNumber>781</IntrospectionStateNumber>
+      <IntrospectionStateNumber>794</IntrospectionStateNumber>
       <ObjectId>16389</ObjectId>
       <OwnerName>postgres</OwnerName>
     </database>
@@ -4132,21 +4132,21 @@ true posixrules
     <schema id="265" parent="2" name="public">
       <Comment>standard public schema</Comment>
       <Current>1</Current>
-      <IntrospectionStateNumber>781</IntrospectionStateNumber>
-      <LastIntrospectionLocalTimestamp>2024-08-05.16:06:39</LastIntrospectionLocalTimestamp>
+      <IntrospectionStateNumber>794</IntrospectionStateNumber>
+      <LastIntrospectionLocalTimestamp>2024-08-06.14:26:31</LastIntrospectionLocalTimestamp>
       <ObjectId>2200</ObjectId>
       <StateNumber>523</StateNumber>
       <OwnerName>pg_database_owner</OwnerName>
     </schema>
     <table id="266" parent="265" name="_sqlx_migrations">
-      <ObjectId>24580</ObjectId>
-      <StateNumber>743</StateNumber>
+      <ObjectId>24599</ObjectId>
+      <StateNumber>785</StateNumber>
       <AccessMethodId>2</AccessMethodId>
       <OwnerName>rustpi</OwnerName>
     </table>
     <table id="267" parent="265" name="user">
-      <ObjectId>24588</ObjectId>
-      <StateNumber>779</StateNumber>
+      <ObjectId>24607</ObjectId>
+      <StateNumber>786</StateNumber>
       <AccessMethodId>2</AccessMethodId>
       <OwnerName>rustpi</OwnerName>
     </table>
@@ -4154,14 +4154,14 @@ true posixrules
       <DasType>bigint|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
-      <StateNumber>743</StateNumber>
+      <StateNumber>785</StateNumber>
       <TypeId>20</TypeId>
     </column>
     <column id="269" parent="266" name="description">
       <DasType>text|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
-      <StateNumber>743</StateNumber>
+      <StateNumber>785</StateNumber>
       <TypeId>25</TypeId>
     </column>
     <column id="270" parent="266" name="installed_on">
@@ -4169,100 +4169,124 @@ true posixrules
       <DefaultExpression>now()</DefaultExpression>
       <NotNull>1</NotNull>
       <Position>3</Position>
-      <StateNumber>743</StateNumber>
+      <StateNumber>785</StateNumber>
       <TypeId>1184</TypeId>
     </column>
     <column id="271" parent="266" name="success">
       <DasType>boolean|0s</DasType>
       <NotNull>1</NotNull>
       <Position>4</Position>
-      <StateNumber>743</StateNumber>
+      <StateNumber>785</StateNumber>
       <TypeId>16</TypeId>
     </column>
     <column id="272" parent="266" name="checksum">
       <DasType>bytea|0s</DasType>
       <NotNull>1</NotNull>
       <Position>5</Position>
-      <StateNumber>743</StateNumber>
+      <StateNumber>785</StateNumber>
       <TypeId>17</TypeId>
     </column>
     <column id="273" parent="266" name="execution_time">
       <DasType>bigint|0s</DasType>
       <NotNull>1</NotNull>
       <Position>6</Position>
-      <StateNumber>743</StateNumber>
+      <StateNumber>785</StateNumber>
       <TypeId>20</TypeId>
     </column>
     <index id="274" parent="266" name="_sqlx_migrations_pkey">
       <ColNames>version</ColNames>
       <NameSurrogate>1</NameSurrogate>
-      <ObjectId>24586</ObjectId>
+      <ObjectId>24605</ObjectId>
       <Primary>1</Primary>
-      <StateNumber>743</StateNumber>
+      <StateNumber>785</StateNumber>
       <Unique>1</Unique>
       <AccessMethodId>403</AccessMethodId>
     </index>
     <key id="275" parent="266" name="_sqlx_migrations_pkey">
       <NameSurrogate>1</NameSurrogate>
-      <ObjectId>24587</ObjectId>
+      <ObjectId>24606</ObjectId>
       <Primary>1</Primary>
-      <StateNumber>743</StateNumber>
-      <UnderlyingIndexId>24586</UnderlyingIndexId>
+      <StateNumber>785</StateNumber>
+      <UnderlyingIndexId>24605</UnderlyingIndexId>
     </key>
     <column id="276" parent="267" name="user_id">
       <DasType>uuid|0s</DasType>
       <DefaultExpression>gen_random_uuid()</DefaultExpression>
       <NotNull>1</NotNull>
       <Position>1</Position>
-      <StateNumber>779</StateNumber>
+      <StateNumber>786</StateNumber>
       <TypeId>2950</TypeId>
     </column>
     <column id="277" parent="267" name="username">
       <DasType>text|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
-      <StateNumber>779</StateNumber>
+      <StateNumber>786</StateNumber>
       <TypeId>25</TypeId>
     </column>
-    <column id="278" parent="267" name="password_hash">
+    <column id="278" parent="267" name="email">
       <DasType>text|0s</DasType>
       <NotNull>1</NotNull>
       <Position>3</Position>
-      <StateNumber>779</StateNumber>
+      <StateNumber>786</StateNumber>
       <TypeId>25</TypeId>
     </column>
-    <index id="279" parent="267" name="user_pkey">
+    <column id="279" parent="267" name="password_hash">
+      <DasType>text|0s</DasType>
+      <NotNull>1</NotNull>
+      <Position>4</Position>
+      <StateNumber>786</StateNumber>
+      <TypeId>25</TypeId>
+    </column>
+    <index id="280" parent="267" name="user_pkey">
       <ColNames>user_id</ColNames>
       <NameSurrogate>1</NameSurrogate>
-      <ObjectId>24594</ObjectId>
+      <ObjectId>24613</ObjectId>
       <Primary>1</Primary>
-      <StateNumber>779</StateNumber>
+      <StateNumber>786</StateNumber>
       <Unique>1</Unique>
       <AccessMethodId>403</AccessMethodId>
     </index>
-    <index id="280" parent="267" name="user_username_key">
+    <index id="281" parent="267" name="user_username_key">
       <ColNames>username</ColNames>
       <NameSurrogate>1</NameSurrogate>
-      <ObjectId>24596</ObjectId>
-      <StateNumber>779</StateNumber>
+      <ObjectId>24615</ObjectId>
+      <StateNumber>786</StateNumber>
       <Unique>1</Unique>
       <AccessMethodId>403</AccessMethodId>
       <CollationNames>default</CollationNames>
       <CollationIds>100</CollationIds>
       <CollationParentNames>pg_catalog</CollationParentNames>
     </index>
-    <key id="281" parent="267" name="user_pkey">
+    <index id="282" parent="267" name="user_email_key">
+      <ColNames>email</ColNames>
       <NameSurrogate>1</NameSurrogate>
-      <ObjectId>24595</ObjectId>
+      <ObjectId>24617</ObjectId>
+      <StateNumber>786</StateNumber>
+      <Unique>1</Unique>
+      <AccessMethodId>403</AccessMethodId>
+      <CollationNames>default</CollationNames>
+      <CollationIds>100</CollationIds>
+      <CollationParentNames>pg_catalog</CollationParentNames>
+    </index>
+    <key id="283" parent="267" name="user_pkey">
+      <NameSurrogate>1</NameSurrogate>
+      <ObjectId>24614</ObjectId>
       <Primary>1</Primary>
-      <StateNumber>779</StateNumber>
-      <UnderlyingIndexId>24594</UnderlyingIndexId>
+      <StateNumber>786</StateNumber>
+      <UnderlyingIndexId>24613</UnderlyingIndexId>
     </key>
-    <key id="282" parent="267" name="user_username_key">
+    <key id="284" parent="267" name="user_username_key">
       <NameSurrogate>1</NameSurrogate>
-      <ObjectId>24597</ObjectId>
-      <StateNumber>779</StateNumber>
-      <UnderlyingIndexId>24596</UnderlyingIndexId>
+      <ObjectId>24616</ObjectId>
+      <StateNumber>786</StateNumber>
+      <UnderlyingIndexId>24615</UnderlyingIndexId>
+    </key>
+    <key id="285" parent="267" name="user_email_key">
+      <NameSurrogate>1</NameSurrogate>
+      <ObjectId>24618</ObjectId>
+      <StateNumber>786</StateNumber>
+      <UnderlyingIndexId>24617</UnderlyingIndexId>
     </key>
   </database-model>
 </dataSource>

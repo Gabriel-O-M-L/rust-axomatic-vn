@@ -1,8 +1,25 @@
-use axum::{Router, routing};
-use crate::views::user_views;
+use axum::{Json, Router, routing};
 use sqlx::PgPool;
-pub fn router_creator(database : PgPool) -> Router {
+use std::sync::Arc;
+
+use crate::views::user_views;
+use crate::views::user_views::User;
+
+pub fn router_creator(database: PgPool) -> Router {
+    let database = Arc::new(database);
+
     Router::new()
-        .route("/home", routing::get(|| async { "Hello, world!" }))
-        .route("/SignUp", routing::get(|| async { user_views::sign_up(database) }))
+        .route("/home", routing::post(|| async { "Hello, world!" }))
+        .route("/SignUp", {
+            let db = Arc::clone(&database);
+            routing::post(move |payload: Json<User>| {
+                user_views::sign_up(db.clone(), payload)
+            })
+        })
+        .route("/Login", {
+            let db = Arc::clone(&database);
+            routing::post(move |payload: Json<User>| {
+                user_views::sign_in(db.clone(), payload)
+            })
+        })
 }

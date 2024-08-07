@@ -11,3 +11,8 @@ sqlx = { version = "0.8.0", features = ["runtime-tokio-rustls", "postgres", "tim
 tokio = { version = "1.39.1", features = ["rt", "rt-multi-thread", "macros"] }
 time = "0.3.31"
 dotenv = "0.15.0"
+serde = "1.0.204"
+bcrypt = "0.15.1"
+jsonwebtoken = "9.3.0"
+chrono = "0.4.38"
+arc = "0.0.1"
