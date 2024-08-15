@@ -1,0 +1,20 @@
+create table if not exists "comic"
+(
+    comic_id                uuid primary key default gen_random_uuid(),
+    title                   text not null,
+    publisher               FOREIGN KEY REFERENCES publisher(publisher_id),
+    script                  FOREIGN KEY REFERENCES author(author_id),
+    colorist                FOREIGN KEY REFERENCES author(author_id),
+    penciller               FOREIGN KEY REFERENCES author(author_id),
+    inker                   FOREIGN KEY REFERENCES author(author_id),
+    letterer                FOREIGN KEY REFERENCES author(author_id),
+    cover_artist            FOREIGN KEY REFERENCES author(author_id),
+    status                  text not null,
+    publication_date        date not null,
+    genre                   text not null,
+    original_language       text not null,
+    country_of_origin       text not null,
+    number_of_pages         int not null,
+    synopsis                text not null,
+    cover_image             text not null,
+);

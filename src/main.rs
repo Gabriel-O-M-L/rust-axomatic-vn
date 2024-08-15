@@ -26,8 +26,10 @@ async fn db_pool() -> PgPool {
 async fn main() {
     dotenv().ok();
     let app: Router = router_creator().await;
+    let running_port = std::env::var("PORT").unwrap_or("8080".to_string());
+    let address = format!("{}{}", "127.0.0.1:", running_port);
+    let listener = TcpListener::bind(address).await.unwrap();
 
-    let listener = TcpListener::bind("127.0.0.1:8080").await.unwrap();
     match serve(listener, app.into_make_service()).await{
         Ok(_) => eprintln!("Server started on port 8080"),
         Err(e) => println!("Error starting server: {}", e),
