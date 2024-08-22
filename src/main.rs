@@ -3,7 +3,6 @@ mod routers;
 mod views;
 mod tools;
 
-use tower_http::cors::CorsLayer;
 use sqlx::PgPool;
 use axum::{Router, serve};
 use tokio::net::TcpListener;

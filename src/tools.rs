@@ -1,14 +1,11 @@
 use axum::{
-    async_trait,
-    extract::{FromRequest, RequestParts},
     http::{Request, StatusCode},
     response::IntoResponse,
     middleware::Next,
+    body::Body
 };
 use jsonwebtoken::{decode, DecodingKey, Validation, Algorithm, EncodingKey, Header};
 use serde::{Deserialize, Serialize};
-use std::future::Future;
-use std::pin::Pin;
 
 #[derive(Serialize, Deserialize)]
 struct Claims {
@@ -16,7 +13,7 @@ struct Claims {
     exp: usize,
 }
 
-pub async fn auth<B>(req: Request<B>, next: Next) -> impl IntoResponse {
+pub async fn auth(req: Request<Body>, next: Next) -> impl IntoResponse {
     let headers = req.headers();
     if let Some(auth_header) = headers.get("Authorization") {
         if let Ok(auth_str) = auth_header.to_str() {
@@ -38,9 +35,6 @@ pub async fn auth<B>(req: Request<B>, next: Next) -> impl IntoResponse {
     StatusCode::UNAUTHORIZED.into_response()
 }
 
-
-
-
 pub fn create_jwt(email: &str) -> Result<String, jsonwebtoken::errors::Error> {
     let expiration = chrono::Utc::now()
         .checked_add_signed(chrono::Duration::days(1))
@@ -52,5 +46,5 @@ pub fn create_jwt(email: &str) -> Result<String, jsonwebtoken::errors::Error> {
         exp: expiration,
     };
 
-    encode(&Header::default(), &claims, &EncodingKey::from_secret("secret".as_ref()))
+    jsonwebtoken::encode(&Header::default(), &claims, &EncodingKey::from_secret("secret".as_ref()))
 }
