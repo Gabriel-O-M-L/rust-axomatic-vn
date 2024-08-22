@@ -11,13 +11,18 @@ use bcrypt::{hash,DEFAULT_COST,verify};
 use crate::tools::create_jwt;
 
 #[derive(Deserialize, Clone)]
-pub struct User {
+pub struct UserCreate {
     username: String,
     email: String,
     password: String,
 }
+#[derive(Deserialize, Clone)]
+pub struct UserLogin{
+    email: String,
+    password: String,
+}
 
-pub async fn sign_up(database: Arc<PgPool>, Json(payload): Json<User>) -> impl IntoResponse {
+pub async fn sign_up(database: Arc<PgPool>, Json(payload): Json<UserCreate>) -> impl IntoResponse {
     match hash(&payload.password, DEFAULT_COST) {
         Ok(password_hash) => {
             match sqlx::query("INSERT INTO \"user\" (username, email, password_hash) VALUES ($1, $2, $3)")
@@ -40,7 +45,7 @@ pub async fn sign_up(database: Arc<PgPool>, Json(payload): Json<User>) -> impl I
         }
     }
 }
-pub async fn sign_in(database: Arc<PgPool>, Json(payload) : Json<User>) -> impl IntoResponse {
+pub async fn sign_in(database: Arc<PgPool>, Json(payload) : Json<UserLogin>) -> impl IntoResponse {
     match sqlx::query("SELECT email, password_hash FROM \"user\" WHERE email = $1")
         .bind(&payload.email)
         .fetch_one(&*database)

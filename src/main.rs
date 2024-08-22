@@ -3,6 +3,7 @@ mod routers;
 mod views;
 mod tools;
 
+use tower_http::cors::CorsLayer;
 use sqlx::PgPool;
 use axum::{Router, serve};
 use tokio::net::TcpListener;
@@ -25,9 +26,11 @@ async fn db_pool() -> PgPool {
 #[tokio::main]
 async fn main() {
     dotenv().ok();
+
     let app: Router = router_creator().await;
     let running_port = std::env::var("PORT").unwrap_or("8080".to_string());
     let address = format!("{}{}", "127.0.0.1:", running_port);
+
     let listener = TcpListener::bind(address).await.unwrap();
 
     match serve(listener, app.into_make_service()).await{
